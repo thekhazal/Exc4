@@ -1,0 +1,58 @@
+import java.util.*;
+
+public class SimpleClock {
+
+  public op void tick();
+  public op void alarm();
+  public op void tickKILL();
+
+  private int delay;
+
+  public SimpleClock(int delay) {
+    this.delay = delay;
+  }
+
+
+  private process ticker {
+	  
+    long next = System.nanoTime();
+    long w;
+    do {
+     inni void tickKILL(){
+    	 break;
+     }	
+     [] else {  
+    	next += (delay*1000000);
+      	w = Math.max(0,(next-System.nanoTime())/1000000);
+      	edu.ucdavis.jr.JR.nap(w);
+      	send tick();
+     }
+    } while (true);
+  }
+
+  public op void timer(cap void() alarm, int ms) {
+    edu.ucdavis.jr.JR.nap(ms);
+    send alarm();
+  }
+
+  process listener {
+	  int cnt = 0;
+	  send timer(alarm, 100);
+	  while(true){
+		  inni void tick(){
+			  cnt++;
+		  }
+		  [] void alarm() {
+			  send tickKILL();
+			  break;
+		  }
+	  }
+	  System.out.println(cnt);
+  }
+  
+  public static void main(String[] args) {
+	 Monitor.activate();
+	 SimpleClock clock = new SimpleClock(10);
+     System.out.println("Done.");
+  }
+}
